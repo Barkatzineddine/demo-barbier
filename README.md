@@ -59,7 +59,7 @@ A production version keeps the same checks on a server and adds real authenticat
 
 ## Performance
 
-Lighthouse, mobile profile: **Performance 98, Accessibility 100, Best Practices 100, SEO 100** (desktop: 100 on all four). The cover photo weighs 9 to 33 KB in WebP with `srcset`, the font is preloaded, the booking and owner code is loaded only when needed (`import()`), and nothing shifts while the page loads.
+Lighthouse on the live site (22 October 2026), mobile profile: **Performance 98, Accessibility 100, Best Practices 100, SEO 100**; desktop profile: 100 on all four. The cover photo weighs 9 to 33 KB in WebP with `srcset`, the font is preloaded, the booking and owner code is loaded only when needed (`import()`), and nothing shifts while the page loads.
 
 ## Stack
 

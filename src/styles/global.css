@@ -37,6 +37,12 @@ html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition: none !important; animation: none !important; }
 }
+/* Pre-rendered first visit (build/prerender.ts, public/boot.js): the copy shows at once, entrance
+   animations stay finished while the app replaces it, and what depends on the moment waits for the app */
+[data-prerendered] { display: contents; }
+[data-prerender="skip"] [data-prerendered] { display: none; }
+[data-prerendered] [data-volatile] { visibility: hidden; }
+[data-prerender="shown"] *, [data-prerender="shown"] *::before, [data-prerender="shown"] *::after { animation-delay: -60s !important; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.6 var(--sans); }
 img, svg { display: block; max-width: 100%; }
 a { color: var(--brass-2); text-underline-offset: 3px; }
@@ -52,6 +58,7 @@ code, kbd { font: .85em var(--mono); }
 [hidden] { display: none !important; }
 .sr { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.noscript { margin: 0; padding: 12px 20px; border-bottom: 1px solid currentColor; }
 .skip { position: absolute; left: 12px; top: -60px; z-index: 100; background: var(--brass); color: var(--ink); padding: 10px 14px; border-radius: 8px; font-weight: 600; }
 .skip:focus { top: 12px; }
 .wrap { width: min(1120px, 100% - 32px); margin-inline: auto; }
@@ -200,6 +207,7 @@ select:disabled { opacity: .6; }
 .hours td { text-align: right; color: var(--muted); }
 .hours tr.today th, .hours tr.today td { color: var(--brass-2); font-weight: 600; }
 .today-mark { font-weight: 400; font-size: .85em; }
+[data-prerendered] .hours tr.today th, [data-prerendered] .hours tr.today td { color: inherit; font-weight: inherit; } /* the copy does not know which day it is */
 .tag { font-size: .75rem; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--brass); color: var(--brass-2); margin-left: 4px; }
 .map { margin: 0 0 18px; border-radius: var(--radius); overflow: hidden; border: 1px solid var(--line); }
 address { font-style: normal; line-height: 1.8; margin-bottom: 14px; }

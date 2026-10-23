@@ -5,6 +5,7 @@ import { Home } from './pages/Home';
 import { app } from './state/app';
 import { deviceBookingIds, useSession } from './state/session';
 import { Link, match, navigate, useLocation, useScrollOnNavigate } from './shared/router';
+import { usePrerenderHandoff } from './shared/prerender';
 import { onInstallPrompt } from './shared/sw';
 import { FeedbackProvider, useFeedback } from './shared/ui/Feedback';
 
@@ -16,6 +17,7 @@ const Confirmation = lazy(() => import('./pages/Booking').then((m) => ({ default
 
 export function App() {
   const { t } = useFormat();
+  usePrerenderHandoff();
   return (
     <FeedbackProvider closeLabel={t('common.close')}>
       <Shell />

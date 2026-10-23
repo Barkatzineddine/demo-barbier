@@ -39,13 +39,13 @@ function OpenStatus() {
   const today = isoDate(now);
   const min = minutesOf(now);
   const info = dayInfo({ closures }, today);
-  if (info.open && min >= info.from && min < info.to) return <p className="status is-open">{t('status.open', { time: hhmm(info.to) })}</p>;
+  if (info.open && min >= info.from && min < info.to) return <p className="status is-open" data-volatile>{t('status.open', { time: hhmm(info.to) })}</p>;
   for (let i = 0; i < 14; i++) {
     const d = addDays(today, i);
     const inf = dayInfo({ closures }, d);
     if (!inf.open || (i === 0 && min >= inf.from)) continue;
     const when = i === 0 ? t('status.today') : i === 1 ? t('status.tomorrow') : date(d, { weekday: 'long' });
-    return <p className="status is-closed">{t('status.closed', { when, time: hhmm(inf.from) })}</p>;
+    return <p className="status is-closed" data-volatile>{t('status.closed', { when, time: hhmm(inf.from) })}</p>;
   }
   return null;
 }
@@ -195,7 +195,7 @@ function Infos() {
                 const h = HOURS[d];
                 return (
                   <tr key={d} className={d === today ? 'today' : undefined}>
-                    <th scope="row">{dayName(d)}{d === today ? <span className="today-mark"> · {t('infos.todayMark')}</span> : null}</th>
+                    <th scope="row">{dayName(d)}{d === today ? <span className="today-mark" data-volatile> · {t('infos.todayMark')}</span> : null}</th>
                     <td>{h ? `${hhmm(h[0])} – ${hhmm(h[1])}` : t('infos.closed')}{d === 4 ? <span className="tag">{t('infos.late')}</span> : null}</td>
                   </tr>
                 );

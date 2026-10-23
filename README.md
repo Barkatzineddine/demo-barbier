@@ -60,6 +60,7 @@ flowchart LR
 - **The state is never trusted.** Whatever comes from `localStorage` or from another tab is parsed with the same Zod schema; invalid or hand-edited data falls back to fresh demo data instead of being rendered.
 - **Cross-tab sync without a race.** The first version re-read `localStorage` on each BroadcastChannel message. The browser tests showed that Chrome can deliver the message before the other tab's storage write is visible, so the message now carries the validated new state.
 - **Light on the network.** The booking, account and staff screens are separate chunks loaded on demand; a small service worker generated at build time precaches the app shell for offline use.
+- **Pre-rendered first screen.** After the build, `build/prerender.ts` opens the built app in headless Chrome with empty storage and copies the rendered home page into `index.html`, so a first visit sees it before any JavaScript arrives. The copy is inert, and the app replaces it on its first render without replaying entrance animations; the app's code downloads with the page (`modulepreload`) but runs only after that first paint. A tiny inline script, allowed by its CSP hash, shows the copy only on a first visit: a deep link, saved data or another language never flash the wrong screen. On a simulated mobile 4G line, the home page now appears after 0.78 s instead of 1.27 s.
 
 ```
 src/
@@ -68,7 +69,7 @@ src/
   shared/   router, i18n, security helpers, anti-spam guard, UI primitives
   pages/    Home, Booking, Account, staff/ (Agenda, BookingsList, Stats, Messages, Closures)
   i18n/     French and English dictionaries (same keys, checked by a test)
-build/      Vite plugins: CSP meta tag, service worker
+build/      Vite plugins (CSP meta tag with the boot script's hash, service worker, app preload) and the pre-render step
 tests/      unit/ (Vitest) and e2e/ (Playwright)
 ```
 
@@ -80,8 +81,8 @@ Every push runs the [CI workflow](.github/workflows/ci.yml). The site is deploye
 | --- | --- |
 | Lint | `typescript-eslint` strict, React hooks rules, and a ban on `innerHTML`, `outerHTML` and `dangerouslySetInnerHTML` |
 | Types | `tsc` in strict mode, no `any` escape hatches |
-| Unit tests | 102 Vitest tests: availability engine, holidays, passwords, CSV, anti-spam, store and cross-tab messages, accounts and login throttling, translations, command palette, the service worker's network timeout. Coverage threshold on the logic (94.6 % of lines) |
-| Browser tests | 23 Playwright scenarios on a desktop and a mobile profile: booking, drag and drop with undo, live sync between two tabs, roles, offline mode, language switch, axe accessibility scans (WCAG 2.2 AA) of every screen, security checks. Any console error fails the test |
+| Unit tests | 104 Vitest tests: availability engine, holidays, passwords, CSV, anti-spam, store and cross-tab messages, accounts and login throttling, translations, command palette, the service worker's network timeout, the CSP hash of the inlined boot script. Coverage threshold on the logic (94.6 % of lines) |
+| Browser tests | 28 Playwright scenarios on a desktop and a mobile profile: the pre-rendered first screen (shown before the app, replaced without a flash, hidden on deep links and returning visits, readable without JavaScript), booking, drag and drop with undo, live sync between two tabs, roles, offline mode, language switch, axe accessibility scans (WCAG 2.2 AA) of every screen, security checks. Any console error fails the test |
 | Lighthouse | Lighthouse CI budgets: performance ≥ 90, accessibility 100, best practices 100, SEO ≥ 90 |
 | Supply chain | `npm audit`, `npm ci --ignore-scripts`, Actions pinned by commit SHA, Dependabot with a 7-day cooldown |
 

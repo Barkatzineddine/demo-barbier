@@ -80,7 +80,7 @@ Every push runs the [CI workflow](.github/workflows/ci.yml). The site is deploye
 | --- | --- |
 | Lint | `typescript-eslint` strict, React hooks rules, and a ban on `innerHTML`, `outerHTML` and `dangerouslySetInnerHTML` |
 | Types | `tsc` in strict mode, no `any` escape hatches |
-| Unit tests | 97 Vitest tests: availability engine, holidays, passwords, CSV, anti-spam, store and cross-tab messages, accounts and login throttling, translations, command palette. Coverage threshold on the logic (94.6 % of lines) |
+| Unit tests | 102 Vitest tests: availability engine, holidays, passwords, CSV, anti-spam, store and cross-tab messages, accounts and login throttling, translations, command palette, the service worker's network timeout. Coverage threshold on the logic (94.6 % of lines) |
 | Browser tests | 23 Playwright scenarios on a desktop and a mobile profile: booking, drag and drop with undo, live sync between two tabs, roles, offline mode, language switch, axe accessibility scans (WCAG 2.2 AA) of every screen, security checks. Any console error fails the test |
 | Lighthouse | Lighthouse CI budgets: performance ≥ 90, accessibility 100, best practices 100, SEO ≥ 90 |
 | Supply chain | `npm audit`, `npm ci --ignore-scripts`, Actions pinned by commit SHA, Dependabot with a 7-day cooldown |

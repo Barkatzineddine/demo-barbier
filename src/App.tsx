@@ -53,9 +53,9 @@ function Shell() {
 
 function DemoBar() {
   const { t, lang, setLang } = useFormat();
-  const { confirm } = useFeedback();
-  const [install, setInstall] = useState<(() => Promise<void>) | null>(null);
-  useEffect(() => onInstallPrompt((show) => setInstall(() => show)), []);
+  const { confirm, toast } = useFeedback();
+  // offered in a toast: a button appearing in the bar would push the page down (layout shift)
+  useEffect(() => onInstallPrompt((show) => { if (show) toast(t('demo.installable'), 'info', { label: t('demo.install'), run: () => void show() }); }), [t, toast]);
   const reset = async () => {
     const ok = await confirm({ title: t('demo.resetTitle'), body: t('demo.resetBody'), ok: t('demo.reset'), cancel: t('common.cancel'), danger: true });
     if (!ok) return;
@@ -72,7 +72,6 @@ function DemoBar() {
     <div className="demo-bar">
       <p><strong>{t('demo.label')}</strong> · {t('demo.text')} <a href="https://barkatzineddine.github.io/#contact">{t('demo.cta')}</a></p>
       <div className="demo-actions">
-        {install ? <button type="button" className="demo-btn" onClick={() => void install()}>{t('demo.install')}</button> : null}
         <button type="button" className="demo-btn" title={t('lang.label')} onClick={() => setLang(lang === 'fr' ? 'en' : 'fr')} lang={lang === 'fr' ? 'en' : 'fr'}>{t('lang.switch')}</button>
         <button type="button" className="demo-btn" onClick={() => void reset()}>{t('demo.reset')}</button>
       </div>

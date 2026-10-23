@@ -8,6 +8,7 @@ export const en: Record<keyof typeof fr, string> = {
   'demo.resetTitle': 'Reset the demo?',
   'demo.resetBody': 'Bookings, messages and accounts created in this browser will be replaced by the starting data.',
   'demo.install': 'Install the app',
+  'demo.installable': 'This site installs as an app and works offline.',
   'lang.switch': 'Français',
   'lang.label': 'Change language',
   'nav.label': 'Main navigation',

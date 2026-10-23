@@ -7,6 +7,7 @@ export const fr = {
   'demo.resetTitle': 'Réinitialiser la démo ?',
   'demo.resetBody': 'Réservations, messages et comptes créés dans ce navigateur seront remplacés par les données de départ.',
   'demo.install': 'Installer l’app',
+  'demo.installable': 'Ce site s’installe comme une application et fonctionne hors ligne.',
   'lang.switch': 'English',
   'lang.label': 'Changer de langue',
   'nav.label': 'Navigation principale',

@@ -7,6 +7,13 @@ updates:
     cooldown: { default-days: 7 }
     groups:
       dependencies: { patterns: ['*'] }
+    ignore:
+      # majors that need a coordinated upgrade: TypeScript waits for typescript-eslint support,
+      # @types/node follows the Node.js version CI runs (24)
+      - dependency-name: typescript
+        update-types: ['version-update:semver-major']
+      - dependency-name: '@types/node'
+        update-types: ['version-update:semver-major']
   - package-ecosystem: github-actions
     directory: /
     schedule: { interval: weekly }

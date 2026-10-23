@@ -231,10 +231,10 @@ function Summary({ serviceId, barberId, date, start, step, go }: {
 /** Shown at #/rdv/<id>, only to the device or the account that made the booking. */
 export function ConfirmationPage({ id }: { id: string }) {
   const { t } = useFormat();
-  usePage(t('title.done'));
   const booking = useApp((s) => s.bookings.find((b) => b.id === id));
   const session = useSession((s) => s.session);
   const mine = booking && (deviceBookingIds().includes(booking.id) || (session?.kind === 'client' && booking.clientId === session.client.id));
+  usePage(mine ? t('title.done') : `${t('book.notFound')} · Maison Corbin`);
   if (!booking || !mine) {
     return (
       <div className="wrap narrow view">

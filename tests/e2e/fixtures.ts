@@ -6,6 +6,16 @@ import type { Booking, State } from '../../src/domain/schema';
 
 export const test = base.extend<{ allowedConsole: RegExp | null; consoleErrors: string[] }>({
   allowedConsole: [null, { option: true }],
+  // a first visit starts on the inert pre-rendered copy (build/prerender.ts): navigations wait until the
+  // app has replaced it, as a person would, unless a test asks to look at the copy (waitUntil: 'commit')
+  page: async ({ page }, use) => {
+    const goto = page.goto.bind(page);
+    const reload = page.reload.bind(page);
+    const live = async (waitUntil?: string) => { if (waitUntil !== 'commit') await page.locator('[data-prerendered]').waitFor({ state: 'detached' }); };
+    page.goto = async (url, options) => { const response = await goto(url, options); await live(options?.waitUntil); return response; };
+    page.reload = async (options) => { const response = await reload(options); await live(options?.waitUntil); return response; };
+    await use(page);
+  },
   // auto: attached to every test without being asked for
   consoleErrors: [async ({ page, allowedConsole }, use) => {
     const errors: string[] = [];

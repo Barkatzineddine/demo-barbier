@@ -268,7 +268,7 @@ address { font-style: normal; line-height: 1.8; margin-bottom: 14px; }
 .view h1 { font-size: clamp(2rem, 6vw, 3rem); }
 .view h1:focus { outline: none; }
 .back-link { display: inline-block; margin-bottom: 14px; font-size: .9rem; }
-.route-loading { min-height: 70vh; position: relative; overflow: hidden; }
+.route-loading { min-height: 100vh; position: relative; overflow: hidden; } /* keeps the footer below the fold: no shift when the screen arrives */
 .route-loading::before { content: ''; position: absolute; top: 0; left: 0; height: 3px; width: 40%; background: var(--brass); animation: loading 1s ease-in-out infinite; }
 
 .stepper { list-style: none; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin: 8px 0 28px; padding: 0; }

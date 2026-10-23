@@ -20,9 +20,13 @@ window.addEventListener('hashchange', () => {
   const notify = () => { current = next; listeners.forEach((l) => l()); };
   // animated page change where supported, instant otherwise or with reduced motion
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
-  if (doc.startViewTransition && !reduce && next.path !== current.path) doc.startViewTransition(() => flushSync(notify));
-  else notify();
+  const doc = document as Document & { startViewTransition?: (cb: () => void) => { ready: Promise<void>; finished: Promise<void> } };
+  if (doc.startViewTransition && !reduce && next.path !== current.path) {
+    // the browser aborts a transition when the viewport changes (mobile toolbars): the page still updates
+    const transition = doc.startViewTransition(() => flushSync(notify));
+    transition.ready.catch(() => undefined);
+    transition.finished.catch(() => undefined);
+  } else notify();
 });
 
 export function useLocation(): Location {
